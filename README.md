@@ -1,28 +1,47 @@
-# 📊 SQL Data Quality & Analysis Pipeline (PostgreSQL)
+# 🏆 SQL Ranking Pipeline (PostgreSQL)
 
-Projeto prático de estudo em **SQL com PostgreSQL**, simulando um **pipeline de análise e auditoria de dados de vendas**.  
-O foco é aplicar conceitos reais utilizados no dia a dia de **Data Analytics**, indo além da sintaxe e priorizando lógica de negócio.
+Projeto de estudo focado em **RANK e DENSE_RANK no PostgreSQL**, aplicados em um cenário real com **JOINs e subqueries**.
+
+O objetivo é ir além da sintaxe e demonstrar **raciocínio analítico**, organização de consultas e interpretação de resultados.
 
 ---
 
 ## 🎯 Objetivo do Projeto
 
-Este projeto tem como objetivo consolidar os seguintes conceitos:
+Aplicar e consolidar os seguintes conceitos:
 
-- 🗂️ Modelagem simples de dados
-- 🔍 Validação e qualidade dos dados
-- 🧪 Uso de tabelas temporárias (`TEMP TABLE`)
-- 🔄 `ALTER TABLE` e `UPDATE` com regras de negócio
-- 🧠 `CASE WHEN`
-- 🔗 `INNER JOIN` e `LEFT JOIN`
-- 🏆 Rankings analíticos com `RANK` e `DENSE_RANK`
-- 🧩 Subqueries
-- 📊 Agregações e métricas analíticas
+- `RANK()` e `DENSE_RANK()`
+- Ranking global
+- Ranking por grupo (`PARTITION BY`)
+- JOIN entre tabelas de fato e dimensão
+- Subqueries com ranking
+- Filtragem de TOP resultados
 
 ---
 
-## 🗂️ Estrutura do Repositório
+## 🗂️ Estrutura do Projeto
 
-sql-data-quality-pipeline/
+sql-ranking-pipeline/
 ├── README.md
-└── sql_data_quality_pipeline.sql
+└── sql_ranking_pipeline.sql
+
+
+---
+
+## 🧠 O que este projeto demonstra
+
+- Uso correto de **window functions**
+- Diferença prática entre `RANK` e `DENSE_RANK`
+- JOIN aplicado antes de ranking
+- Subqueries como camada lógica
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- PostgreSQL
+- SQL
+- Window Functions
+
+
+
