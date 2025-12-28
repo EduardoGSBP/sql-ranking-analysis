@@ -5,10 +5,12 @@
    Foco: RANK, DENSE_RANK, JOINs e Subqueries
    ============================================================ */
 
+-- Limpeza para evitar conflito
+DROP TABLE IF EXISTS sales;
+DROP TABLE IF EXISTS products;
 
 /* ============================================================
    SEÇÃO 1 — TABELAS BASE
-   Objetivo: criar estrutura mínima para ranking real
    ============================================================ */
 
 CREATE TABLE products (
@@ -19,14 +21,12 @@ CREATE TABLE products (
 
 CREATE TABLE sales (
     sale_id SERIAL PRIMARY KEY,
-    product_id INT,
+    product_id INT REFERENCES products(product_id),
     amount NUMERIC(10,2)
 );
 
-
 /* ============================================================
    SEÇÃO 2 — INSERÇÃO DE DADOS
-   Objetivo: simular cenários com empates e categorias
    ============================================================ */
 
 INSERT INTO products (product_name, product_category) VALUES
@@ -47,10 +47,8 @@ INSERT INTO sales (product_id, amount) VALUES
 (6, 550.00),
 (6, 300.00);
 
-
 /* ============================================================
    SEÇÃO 3 — JOIN BÁSICO
-   Objetivo: enriquecer vendas com informações do produto
    ============================================================ */
 
 SELECT
@@ -58,13 +56,11 @@ SELECT
     p.product_category,
     s.amount
 FROM sales s
-INNER JOIN products p
+JOIN products p
     ON s.product_id = p.product_id;
 
-
 /* ============================================================
-   SEÇÃO 4 — RANKING GLOBAL (APÓS JOIN)
-   Objetivo: comparar todas as vendas
+   SEÇÃO 4 — RANKING GLOBAL
    ============================================================ */
 
 SELECT
@@ -73,13 +69,11 @@ SELECT
     s.amount,
     RANK() OVER (ORDER BY s.amount DESC) AS rank_global
 FROM sales s
-INNER JOIN products p
+JOIN products p
     ON s.product_id = p.product_id;
-
 
 /* ============================================================
    SEÇÃO 5 — RANK vs DENSE_RANK
-   Objetivo: evidenciar diferença prática
    ============================================================ */
 
 SELECT
@@ -88,13 +82,11 @@ SELECT
     RANK() OVER (ORDER BY s.amount DESC) AS rank_result,
     DENSE_RANK() OVER (ORDER BY s.amount DESC) AS dense_rank_result
 FROM sales s
-INNER JOIN products p
+JOIN products p
     ON s.product_id = p.product_id;
 
-
 /* ============================================================
-   SEÇÃO 6 — RANK POR CATEGORIA (PARTITION BY)
-   Objetivo: ranking dentro de cada grupo
+   SEÇÃO 6 — RANK POR CATEGORIA
    ============================================================ */
 
 SELECT
@@ -106,13 +98,11 @@ SELECT
         ORDER BY s.amount DESC
     ) AS rank_por_categoria
 FROM sales s
-INNER JOIN products p
+JOIN products p
     ON s.product_id = p.product_id;
-
 
 /* ============================================================
    SEÇÃO 7 — SUBQUERY COM RANK
-   Objetivo: reutilizar ranking como camada lógica
    ============================================================ */
 
 SELECT *
@@ -126,14 +116,12 @@ FROM (
             ORDER BY s.amount DESC
         ) AS rank_categoria
     FROM sales s
-    INNER JOIN products p
+    JOIN products p
         ON s.product_id = p.product_id
 ) ranked_products;
 
-
 /* ============================================================
    SEÇÃO 8 — TOP PRODUTO POR CATEGORIA
-   Objetivo: filtrar apenas o primeiro colocado
    ============================================================ */
 
 SELECT
@@ -150,7 +138,7 @@ FROM (
             ORDER BY s.amount DESC
         ) AS rank_categoria
     FROM sales s
-    INNER JOIN products p
+    JOIN products p
         ON s.product_id = p.product_id
 ) ranked_products
 WHERE rank_categoria = 1;
